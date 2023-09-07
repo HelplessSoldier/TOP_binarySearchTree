@@ -323,6 +323,24 @@ class BinarySearchTree {
     }
     return count;
   }
+
+  isBalanced(root = this.root) {
+    if (root === null) {
+      return true;
+    }
+
+    let leftHeight = this.height(root.left);
+    let rightHeight = this.height(root.right);
+
+    if (
+      Math.abs(leftHeight - rightHeight) <= 2 &&
+      this.isBalanced(root.left) === true &&
+      this.isBalanced(root.right) === true
+    ) {
+      return true;
+    }
+    return false;
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -330,9 +348,11 @@ const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
-tree.delete(9);
+tree.insert(200);
+tree.insert(201);
+// tree.insert(202);
+// tree.insert(203);
 
-let testNode = tree.find(23);
-console.log(tree.depth(testNode));
+console.log(tree.isBalanced());
 
 prettyPrint(tree.root);
