@@ -341,18 +341,9 @@ class BinarySearchTree {
     }
     return false;
   }
+
+  rebalance() {
+    const treeArray = this.inOrder();
+    this.buildTree(treeArray);
+  }
 }
-
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// const testArray = [1, 2, 3, 4, 5, 6, 7];
-
-let tree = new BinarySearchTree();
-tree.buildTree(testArray);
-tree.insert(200);
-tree.insert(201);
-// tree.insert(202);
-// tree.insert(203);
-
-console.log(tree.isBalanced());
-
-prettyPrint(tree.root);
