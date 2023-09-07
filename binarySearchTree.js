@@ -1,5 +1,3 @@
-const prettyPrint = require("./prettyPrint");
-
 class Node {
   constructor(value = null, left = null, right = null) {
     this.value = value;
@@ -347,3 +345,5 @@ class BinarySearchTree {
     this.buildTree(treeArray);
   }
 }
+
+module.exports = BinarySearchTree;
