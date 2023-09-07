@@ -196,6 +196,7 @@ class BinarySearchTree {
         currentNode = currentNode.left;
       }
     }
+    throw new Error("Could not find node");
   }
 
   levelOrder(func) {
@@ -302,6 +303,26 @@ class BinarySearchTree {
 
     return leftHeight > rightHeight ? leftHeight : rightHeight;
   }
+
+  depth(node) {
+    if (node === this.root) {
+      return 0;
+    }
+    let currentNode = this.root;
+    let count = 0;
+    while (currentNode !== node) {
+      if (currentNode === null) {
+        throw new Error("Could not find node, may have been deleted");
+      } else if (node.value > currentNode.value) {
+        currentNode = currentNode.right;
+        count++;
+      } else if (node.value < currentNode.value) {
+        currentNode = currentNode.left;
+        count++;
+      }
+    }
+    return count;
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -311,7 +332,7 @@ let tree = new BinarySearchTree();
 tree.buildTree(testArray);
 tree.delete(9);
 
-let testNode = tree.find(5);
-console.log(tree.height(testNode));
+let testNode = tree.find(23);
+console.log(tree.depth(testNode));
 
 prettyPrint(tree.root);
