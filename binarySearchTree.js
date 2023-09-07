@@ -14,8 +14,10 @@ class BinarySearchTree {
   }
   buildTree(array) {
     let sortedArray = array.slice().sort((a, b) => a - b);
-    console.log(`sorted array: ${sortedArray}`);
-    this.root = this._buildRecursive(sortedArray);
+    let noDuplicatesArray = sortedArray.filter(
+      (value, index, self) => self.indexOf(value) === index
+    );
+    this.root = this._buildRecursive(noDuplicatesArray);
   }
   _buildRecursive(sortedArray) {
     if (sortedArray.length === 0) {
@@ -33,10 +35,42 @@ class BinarySearchTree {
 
     return currentNode;
   }
+  insert(value) {
+    let currentNode = this.root;
+    while (!this._canInsert(value, currentNode)) {
+      if (value > currentNode.value) {
+        currentNode = currentNode.right;
+      } else if (value < currentNode.value) {
+        currentNode = currentNode.left;
+      }
+    }
+    const insertSide = this._canInsert(value, currentNode);
+    if (insertSide === "right") {
+      currentNode.right = new Node(value);
+    } else if (insertSide === "left") {
+      currentNode.left = new Node(value);
+    } else if (insertSide === "duplicate") {
+      return;
+    }
+  }
+  _canInsert(value, node) {
+    if (value === node.value) {
+      return "duplicate";
+    } else if (value > node.value && node.right === null) {
+      return "right";
+    } else if (value < node.value && node.left === null) {
+      return "left";
+    }
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
+tree.insert(10);
+tree.insert(6);
+// tree.insert(69);
+// tree.insert(420);
+tree.insert(7);
 
 prettyPrint(tree.root);
