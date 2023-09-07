@@ -62,6 +62,36 @@ class BinarySearchTree {
       return "left";
     }
   }
+  delete(value) {
+    let currentNode = this.root;
+    let parent = this.root;
+    let lastRight = false;
+
+    while (true) {
+      if (value > currentNode.value) {
+        parent = currentNode;
+        lastRight = true;
+        currentNode = currentNode.right;
+      } else if (value < currentNode.value) {
+        parent = currentNode;
+        lastRight = false;
+        currentNode = currentNode.left;
+      } else if (currentNode.value === value) {
+        break;
+      } else {
+        break;
+      }
+    }
+    if (currentNode.value === value) {
+      if (currentNode.left === null && currentNode.right === null) {
+        if (lastRight) {
+          parent.right = null;
+        } else {
+          parent.left = null;
+        }
+      } else if (currentNode.left != null ) // incomplete, finishing tomorrow
+    }
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -69,8 +99,6 @@ let tree = new BinarySearchTree();
 tree.buildTree(testArray);
 tree.insert(10);
 tree.insert(6);
-// tree.insert(69);
-// tree.insert(420);
-tree.insert(7);
+tree.delete(10);
 
 prettyPrint(tree.root);
