@@ -292,16 +292,26 @@ class BinarySearchTree {
       return resArray;
     }
   }
+
+  height(node, depth = 0) {
+    if (node === null) {
+      return depth - 1;
+    }
+    const leftHeight = this.height(node.left, depth + 1);
+    const rightHeight = this.height(node.right, depth + 1);
+
+    return leftHeight > rightHeight ? leftHeight : rightHeight;
+  }
 }
 
-// const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const testArray = [1, 2, 3, 4, 5, 6, 7];
-
-function testCallback(node) {
-  node.value = node.value / 2;
-}
+const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// const testArray = [1, 2, 3, 4, 5, 6, 7];
 
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
+tree.delete(9);
+
+let testNode = tree.find(5);
+console.log(tree.height(testNode));
 
 prettyPrint(tree.root);
