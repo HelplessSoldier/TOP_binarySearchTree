@@ -196,11 +196,28 @@ class BinarySearchTree {
       }
     }
   }
+
+  levelOrder(func) {
+    let queue = [this.root];
+    let currentNode;
+    let count = 0;
+    while (queue.length > 0) {
+      currentNode = queue.shift();
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
+      }
+      count++;
+      console.log(`no: ${count} val: ${currentNode.value}`);
+    }
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
-console.log(tree.find(67));
+tree.levelOrder();
 
 prettyPrint(tree.root);
