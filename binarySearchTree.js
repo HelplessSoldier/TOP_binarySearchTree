@@ -200,17 +200,23 @@ class BinarySearchTree {
   levelOrder(func) {
     let queue = [this.root];
     let currentNode;
-    let count = 0;
+    let resArray = [];
+
     while (queue.length > 0) {
       currentNode = queue.shift();
+      resArray.push(currentNode.value);
       if (currentNode.left !== null) {
         queue.push(currentNode.left);
       }
       if (currentNode.right !== null) {
         queue.push(currentNode.right);
       }
-      count++;
-      console.log(`no: ${count} val: ${currentNode.value}`);
+      if (typeof func === "function") {
+        func(currentNode);
+      }
+    }
+    if (typeof func !== "function") {
+      return resArray;
     }
   }
 }
@@ -218,6 +224,5 @@ class BinarySearchTree {
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
-tree.levelOrder();
 
 prettyPrint(tree.root);
