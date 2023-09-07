@@ -172,6 +172,7 @@ class BinarySearchTree {
       if (currentNode.left === null && currentNode.right === null) {
         this._deleteLeaf(parent, lastRight);
       } else if (
+        // why no logical xor js ;_;
         (currentNode.left !== null || currentNode.right !== null) &&
         !(currentNode.left !== null && currentNode.right !== null)
       ) {
@@ -219,10 +220,42 @@ class BinarySearchTree {
       return resArray;
     }
   }
+
+  inOrder(func) {
+    const stack = [];
+    const resArray = [];
+    let currentNode = this.root;
+
+    while (currentNode !== null || stack.length > 0) {
+      while (currentNode !== null) {
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      }
+      currentNode = stack.pop();
+      if (typeof func === "function") {
+        func(currentNode);
+      } else {
+        resArray.push(currentNode.value);
+      }
+      currentNode = currentNode.right;
+    }
+    if (typeof func !== "function") {
+      return resArray;
+    }
+  }
 }
 
-const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const testArray = [1, 2, 3, 4, 5, 6, 7];
+
+function test(node) {
+  node.value = node.value / 2;
+}
+
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
+
+console.log(tree.inOrder());
+tree.inOrder(test);
 
 prettyPrint(tree.root);
