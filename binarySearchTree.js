@@ -12,6 +12,7 @@ class BinarySearchTree {
   constructor() {
     this.root = null;
   }
+
   buildTree(array) {
     let sortedArray = array.slice().sort((a, b) => a - b);
     let noDuplicatesArray = sortedArray.filter(
@@ -19,6 +20,7 @@ class BinarySearchTree {
     );
     this.root = this._buildRecursive(noDuplicatesArray);
   }
+
   _buildRecursive(sortedArray) {
     if (sortedArray.length === 0) {
       return null;
@@ -35,6 +37,7 @@ class BinarySearchTree {
 
     return currentNode;
   }
+
   insert(value) {
     let currentNode = this.root;
     while (!this._canInsert(value, currentNode)) {
@@ -53,6 +56,7 @@ class BinarySearchTree {
       return;
     }
   }
+
   _canInsert(value, node) {
     if (value === node.value) {
       return "duplicate";
@@ -62,11 +66,44 @@ class BinarySearchTree {
       return "left";
     }
   }
+
+  _deleteLeaf(parent, lastRight) {
+    if (lastRight) {
+      parent.right = null;
+    } else {
+      parent.left = null;
+    }
+  }
+
+  _deleteSingleChildNode(currentNode, parent, lastRight) {
+    let child;
+    if (currentNode.left) {
+      child = currentNode.left;
+    } else if (currentNode.right) {
+      child = currentNode.right;
+    }
+    if (lastRight) {
+      parent.right = child;
+    } else if (!lastRight) {
+      parent.left = child;
+    }
+  }
+
+  _deleteDualChildNode(currentNode, parent, lastRight) {
+    currentNode.left.right = currentNode.right;
+    if (lastRight) {
+      parent.right = currentNode.left;
+    } else if (!lastRight) {
+      parent.left = currentNode.left;
+    }
+  }
+
   delete(value) {
     let currentNode = this.root;
     let parent = this.root;
     let lastRight = false;
 
+    // find node to delete
     while (true) {
       if (value > currentNode.value) {
         parent = currentNode;
@@ -82,14 +119,18 @@ class BinarySearchTree {
         break;
       }
     }
+
     if (currentNode.value === value) {
       if (currentNode.left === null && currentNode.right === null) {
-        if (lastRight) {
-          parent.right = null;
-        } else {
-          parent.left = null;
-        }
-      } else if (currentNode.left != null ) // incomplete, finishing tomorrow
+        this._deleteLeaf(parent, lastRight);
+      } else if (
+        (currentNode.left !== null || currentNode.right !== null) &&
+        !(currentNode.left !== null && currentNode.right !== null)
+      ) {
+        this._deleteSingleChildNode(currentNode, parent, lastRight);
+      } else if (currentNode.left !== null && currentNode.right !== null) {
+        this._deleteDualChildNode(currentNode, parent, lastRight);
+      }
     }
   }
 }
@@ -99,6 +140,6 @@ let tree = new BinarySearchTree();
 tree.buildTree(testArray);
 tree.insert(10);
 tree.insert(6);
-tree.delete(10);
+tree.delete(4);
 
 prettyPrint(tree.root);
