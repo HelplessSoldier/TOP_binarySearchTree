@@ -264,12 +264,40 @@ class BinarySearchTree {
       return resArray;
     }
   }
+
+  postOrder(func) {
+    const resArray = [];
+    const stack = [];
+    let currentNode = this.root;
+    let lastVisitedNode = null;
+
+    while (currentNode || stack.length > 0) {
+      if (currentNode) {
+        stack.push(currentNode);
+        currentNode = currentNode.left;
+      } else {
+        const peekNode = stack[stack.length - 1];
+        if (peekNode.right && peekNode.right !== lastVisitedNode) {
+          currentNode = peekNode.right;
+        } else {
+          if (typeof func === "function") {
+            func(peekNode);
+          }
+          resArray.push(peekNode.value);
+          lastVisitedNode = stack.pop();
+        }
+      }
+    }
+    if (typeof func !== "function") {
+      return resArray;
+    }
+  }
 }
 
 // const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const testArray = [1, 2, 3, 4, 5, 6, 7];
 
-function test(node) {
+function testCallback(node) {
   node.value = node.value / 2;
 }
 
