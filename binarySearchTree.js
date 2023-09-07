@@ -152,7 +152,6 @@ class BinarySearchTree {
     let parent = this.root;
     let lastRight = false;
 
-    // find node to delete
     while (true) {
       if (value > currentNode.value) {
         parent = currentNode;
@@ -184,13 +183,24 @@ class BinarySearchTree {
       this._deleteRoot(currentNode);
     }
   }
+
+  find(value) {
+    let currentNode = this.root;
+    while (currentNode !== null) {
+      if (value === currentNode.value) {
+        return currentNode;
+      } else if (value > currentNode.value) {
+        currentNode = currentNode.right;
+      } else if (value < currentNode.value) {
+        currentNode = currentNode.left;
+      }
+    }
+  }
 }
 
 const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
-tree.insert(10);
-tree.insert(6);
-tree.delete(8);
+console.log(tree.find(67));
 
 prettyPrint(tree.root);
