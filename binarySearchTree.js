@@ -243,6 +243,27 @@ class BinarySearchTree {
       return resArray;
     }
   }
+
+  preOrder(func) {
+    const stack = [this.root];
+    const resArray = [];
+    let currentNode;
+    while (stack.length > 0) {
+      currentNode = stack.pop();
+      if (currentNode !== null) {
+        resArray.push(currentNode.value);
+        if (typeof func === "function") {
+          func(currentNode);
+        }
+
+        stack.push(currentNode.right);
+        stack.push(currentNode.left);
+      }
+    }
+    if (typeof func !== "function") {
+      return resArray;
+    }
+  }
 }
 
 // const testArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -254,8 +275,5 @@ function test(node) {
 
 let tree = new BinarySearchTree();
 tree.buildTree(testArray);
-
-console.log(tree.inOrder());
-tree.inOrder(test);
 
 prettyPrint(tree.root);
